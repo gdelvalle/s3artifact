@@ -16,6 +16,7 @@ func main() {
 
 	var bucketName = flag.String("bucket", "", "bucket name")
 	var artifactName = flag.String("name", "", "object name")
+	var acl = flag.String("acl", "", "S3 ACL to set on object")
 	flag.Parse()
 
 	if len(*bucketName) == 0 {
@@ -44,6 +45,10 @@ func main() {
 		Bucket: aws.String(*bucketName),
 		Key:    aws.String(*artifactName),
 		Body:   bytes.NewReader(body),
+	}
+
+	if len(*acl) > 0 {
+		params.ACL = aws.String(*acl)
 	}
 
 	_, err := svc.PutObject(params)
