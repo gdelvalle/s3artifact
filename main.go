@@ -17,6 +17,7 @@ func main() {
 	var bucketName = flag.String("bucket", "", "bucket name")
 	var artifactName = flag.String("name", "", "object name")
 	var acl = flag.String("acl", "", "S3 ACL to set on object")
+	var contentType = flag.String("content-type", "", "Content Type of Object")
 	flag.Parse()
 
 	if len(*bucketName) == 0 {
@@ -45,6 +46,10 @@ func main() {
 		Bucket: aws.String(*bucketName),
 		Key:    aws.String(*artifactName),
 		Body:   bytes.NewReader(body),
+	}
+
+	if len(*contentType) > 0 {
+		params.ContentType = aws.String(*contentType)
 	}
 
 	if len(*acl) > 0 {
